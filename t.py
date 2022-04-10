@@ -46,10 +46,9 @@ def plot_button(
         zorder=0,
     )
     r2 = r / 2
-    ax.text(
-        xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_pull, va="center", ha="center"
-    )
-    ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, va="center", ha="center")
+    text_kwargs = dict(va="center", ha="center", fontfamily="sans-serif")
+    ax.text(xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_pull, **text_kwargs)
+    ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, **text_kwargs)
 
 
 fig, ax = plt.subplots(figsize=(8, 7))
