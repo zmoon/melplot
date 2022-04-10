@@ -41,12 +41,12 @@ def plot_button(
         [xc + r * np.cos(t0 + rot), xc + r * np.cos(t0 - rot)],
         [yc + r * np.sin(t0 + rot), yc - r * np.sin(t0 - rot)],
         "-",
-        color="gold",
+        color="forestgreen",
         solid_capstyle="butt",
         zorder=0,
     )
     r2 = r / 2
-    text_kwargs = dict(va="center", ha="center", fontfamily="sans-serif")
+    text_kwargs = dict(va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod")
     ax.text(xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_push, **text_kwargs)
     ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, **text_kwargs)
 
@@ -58,6 +58,8 @@ fig, ax = plt.subplots(figsize=(8, 7))
 # TODO: look into PolyCollection instead individual patches for speed?
 
 # Standard 21-key D/G
+s4 = "D+/A+ D/A G+/D+ G/D"
+s3 = "B+/E- B/E C+/C+ C/C"
 s2 = "F/Eb D/F# G/A B/C D/E F#/G B/A D/C G/E B/F#"
 s1 = "G#/Bb A/C# D/E F#/G A/B D/C# F#/E A/G D/B F#/C# A/E"
 
@@ -73,6 +75,18 @@ for x, s in zip(xs, s1.split()):
 xs = np.arange(10) * dx + r + d + dx / 2
 for x, s in zip(xs, s2.split()):
     plot_button((x, 0.29), s.split("/"), radius=r, ax=ax)
+
+# "Bellows"
+ys = [0.37, 0.4, 0.43, 0.46]
+for y in ys:
+    ax.plot([0.3, 0.7], [y, y], "0.1", lw=1)
+
+xs = np.arange(4) * dx + r + d + 3.5 * dx
+for x, s in zip(xs, s3.split()):
+    plot_button((x, 0.53), s.split("/"), radius=r, ax=ax)
+
+for x, s in zip(xs, s4.split()):
+    plot_button((x, 0.62), s.split("/"), radius=r, ax=ax)
 
 
 ax.axis("scaled")
