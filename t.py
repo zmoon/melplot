@@ -47,7 +47,7 @@ def plot_button(
     )
     r2 = r / 2
     text_kwargs = dict(va="center", ha="center", fontfamily="sans-serif")
-    ax.text(xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_pull, **text_kwargs)
+    ax.text(xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_push, **text_kwargs)
     ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, **text_kwargs)
 
 
