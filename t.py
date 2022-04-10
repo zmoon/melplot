@@ -9,27 +9,47 @@ import numpy as np
 
 plt.close("all")
 
+PI = np.pi
 
-def plot_button(pos: tuple[float, float], notes: tuple[str, str], *, ax, radius: float = 0.02):
+
+def plot_button(
+    pos: tuple[float, float],
+    notes: tuple[str, str],
+    *,
+    ax,
+    radius: float = 0.02,
+    rotation: float = -15,
+):
+    """
+    Parameters
+    ----------
+    rotation
+        Rotation of the push/pull separation line (degrees). Positive is anti-clockwise.
+    """
+    xc, yc = pos
+    r = radius
+    note_push, note_pull = notes
+
+    # Button edge (circle)
     p = mpl.patches.Circle(pos, radius=radius, facecolor="none", edgecolor="blue")
     ax.add_patch(p)
 
-    # theta0 = np.pi/2
-    # rot = np.deg2rad(-30)
-    # ax.plot(
-    #     [pos[0] + r * np.cos(theta0 + rot), pos[0] + r * np.cos(theta0 - rot)],
-    #     [pos[1] + r * np.sin(theta0 + rot), pos[1] + r * np.sin(-theta0 - rot)],
-    #     "-", color="gold",
-    # )
+    # Label push and pull notes
+    t0 = PI / 2
+    rot = np.deg2rad(rotation)
     ax.plot(
-        [pos[0], pos[0]],
-        [pos[1] + r, pos[1] - r],
-        c="gold",
+        [xc + r * np.cos(t0 + rot), xc + r * np.cos(t0 - rot)],
+        [yc + r * np.sin(t0 + rot), yc - r * np.sin(t0 - rot)],
+        "-",
+        color="gold",
         solid_capstyle="butt",
         zorder=0,
     )
-    ax.text(pos[0] - radius / 2, pos[1], notes[0], va="center", ha="center")
-    ax.text(pos[0] + radius / 2, pos[1], notes[1], va="center", ha="center")
+    r2 = r / 2
+    ax.text(
+        xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_pull, va="center", ha="center"
+    )
+    ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, va="center", ha="center")
 
 
 fig, ax = plt.subplots(figsize=(8, 7))
