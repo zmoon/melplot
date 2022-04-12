@@ -49,7 +49,7 @@ Ideas:
 * [Mel Forum 2.5-row](http://forum.melodeon.net/index.php/page,keyboard_25_row.html)
 * [Mel Forum 3-row](http://forum.melodeon.net/index.php/page,keyboard_3_row.html)
 * [bass layouts from Squeezehead](http://squeezehead.com/keyboard-layouts/basses/LAYOUTS.html)
-* [2.5ish-row layouts from Orest](http://www.geocities.ws/kozulich/2plusrowDG.html)
+* [various layouts and notes from Orest](http://www.geocities.ws/kozulich/layouts.html)
 
 
 [^dba]: [Diatonic button accordion](https://en.wikipedia.org/wiki/Diatonic_button_accordion) (DBA) / melodeon / "box" / accordéon diatonique / diato / etc. Also may later extend to plotting the layouts of other button accordion family instruments like concertinas.
