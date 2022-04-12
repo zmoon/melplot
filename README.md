@@ -14,6 +14,8 @@ Plot melodeon[^dba] layout diagrams
   <https://www.daddylongles.com/_files/ugd/2a4ead_6501161c36fa470fbb1f64d24261ad9d.pdf>
 * Dipper blank 30-key Anglo concertina scheme, with push/pull "pills" and piano keyboard with octaves highlighted:
   <http://www.johndipper.co.uk/downloads/blank-scheme.pdf>
+* 20-key Anglo concertina with fancy buttons and octaves notated, [from concertina.com](http://www.concertina.com/fingering/index.htm):
+  <http://www.concertina.com/fingering/images/anglo20-W1000H300.gif>
 
 ### TODO
 
