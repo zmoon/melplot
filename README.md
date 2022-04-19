@@ -16,6 +16,12 @@ Plot melodeon[^dba] layout diagrams
   <http://www.johndipper.co.uk/downloads/blank-scheme.pdf>
 * 20-key Anglo concertina with fancy buttons and octaves notated, [from concertina.com](http://www.concertina.com/fingering/index.htm):
   <http://www.concertina.com/fingering/images/anglo20-W1000H300.gif>
+* Rick Mohr's layout, described [here](http://rickmohr.net/music/melodeon.asp), simple and clean, effective use of colors:
+  <http://rickmohr.net/music/3row.pdf>
+* standard 12-key G/C with notes on stave, fixed solfège, and octave numbers, from Mel Forum:
+  <http://forum.melodeon.net/files/site/keyboards/GC_with_accidentals_showing_notes_on_stave.pdf>
+* 3-row D/G/acc with fixed solfège coloring treble buttons by octave, by Bob Ellis:
+  <http://forum.melodeon.net/files/site/Ellis3row.pdf>
 
 ### TODO
 
