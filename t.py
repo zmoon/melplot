@@ -70,6 +70,15 @@ G#4|Bb4 A3|C#4 D4|E F#|G A|B D5|C# F#|E A|G D6|B F#|C# A|E
 
 dg21_treb_only = "\n".join(dg21.splitlines()[3:])
 
+elye_new = """\
+Eb+|F#- Eb|F# D+|A+ D|A G+|D+ G|D
+Bb+|F+  Bb|F  B-|E- B|E C+|C+ C|C
+---
+Bb3|F3 Eb|D F|F Bb|G# C|D Eb|Eb E|F Bb|G# Eb|D E|F
+G3|A B|C E4|F#4 G4|A B|C D|E G5|F# B|A D|C G6|E B|F#
+D3|E F#|B A3|C#4 D4|E F#|G A|B D5|C# F#|E A|G D6|B F#|C# A|E
+"""
+
 
 def split_button(s: str, *, sep: str = "|"):
     """Split button with validation."""
@@ -106,12 +115,14 @@ def read_layout(s: str, *, button_sep: str = "|"):
     return treb_rows, bass_rows
 
 
-treb_rows, bass_rows = read_layout(dg21)
+treb_rows, bass_rows = read_layout(elye_new)
+nmax = max(len(row) for row in treb_rows)
 
 # Size settings
-figw = 8
-r = 0.04  # radius
-d = 0.01  # space between
+figw = 9
+drel = 0.25  # button padding relative to radius
+r = 1 / (2 * nmax + (nmax + 1) * drel)  # radius, maximizing horiz space
+d = drel * r  # space between
 dx = 2 * r + d  # center to center distance
 n_bellows = 4
 dy_bellows = 0.03
@@ -127,7 +138,7 @@ if not DEBUG:
 # Compute treble row starting positions??
 # TODO: Probably want to be able to specify this in input
 ns = [len(row) for row in treb_rows]
-x0s = [0, 0.5]  # just set for now (button-size-relative)
+x0s = [0, 0.5, 1]  # just set for now (button-size-relative)
 
 # Treble buttons
 ys = d + r + np.arange(len(treb_rows)) * dx
