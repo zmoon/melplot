@@ -53,7 +53,13 @@ def plot_button(
     text_kwargs = dict(
         va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod", size=12
     )
-    ax.text(xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_push, **text_kwargs)
+    ax.text(
+        xc + r2 * np.cos(PI + rot),
+        yc + r2 * np.sin(PI + rot),
+        note_push.rstrip("*"),
+        **text_kwargs,
+        weight="bold" if note_push.endswith("*") else None,
+    )
     ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, **text_kwargs)
 
 
@@ -74,8 +80,8 @@ elye_new = """\
 Eb+|F#- Eb|F# D+|A+ D|A G+|D+ G|D
 Bb+|F+  Bb|F  B-|E- B|E C+|C+ C|C
 ---
-Bb3|F3 Eb|D F|F Bb|G# C|D Eb|Eb E|F Bb|G# Eb|D E|F
-G3|A B|C E4|F#4 G4|A B|C D|E G5|F# B|A D|C G6|E B|F#
+Bb3|F3 Eb|D F|F Bb|G# C|D Eb|Eb E*|F Bb|G# Eb|D E*|F
+G3|A B|C4 E4*|F#4 G4|A B|C D|E G5|F# B|A D|C G6|E B|F#
 D3|E F#|B A3|C#4 D4|E F#|G A|B D5|C# F#|E A|G D6|B F#|C# A|E
 """
 
@@ -123,11 +129,13 @@ figw = 9
 drel = 0.25  # button padding relative to radius
 r = 1 / (2 * nmax + (nmax + 1) * drel)  # radius, maximizing horiz space
 d = drel * r  # space between
-dx = 2 * r + d  # center to center distance
+dx = 2 * r + d  # button center-to-center horiz distance
 n_bellows = 4
 dy_bellows = 0.03
 w_bellows = 0.5
 pad_bellows = 0.035
+
+# TODO: angled/offset treble button spacing same as horiz (need some trig)
 
 fig, ax = plt.subplots(figsize=(figw, figw), constrained_layout=True)
 # constrained layout seems to do a better job of eliminating unused margin space
