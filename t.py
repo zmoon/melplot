@@ -13,7 +13,7 @@ PI = np.pi
 DEBUG = False
 
 
-tran = str.maketrans("#b=0123456789", "♯♭♮₀₁₂₃₄₅₆₇₈₉")
+tran = str.maketrans("#b=0123456789-", "♯♭♮₀₁₂₃₄₅₆₇₈₉−")
 
 
 def plot_button(
@@ -126,16 +126,18 @@ nmax = max(len(row) for row in treb_rows)
 
 # Size settings
 figw = 9
-drel = 0.25  # button padding relative to radius
+drel = 0.32  # button padding relative to radius
 r = 1 / (2 * nmax + (nmax + 1) * drel)  # radius, maximizing horiz space
 d = drel * r  # space between
 dx = 2 * r + d  # button center-to-center horiz distance
 n_bellows = 4
 dy_bellows = 0.03
 w_bellows = 0.5
-pad_bellows = 0.035
+pad_bellows = 0.03
 
-# TODO: angled/offset treble button spacing same as horiz (need some trig)
+# Vertical offset to make angled/offset treble button spacing same as horiz
+# (equilateral triangle arrangement)
+d2 = np.sqrt((2 * r + d) ** 2 - (r + d / 2) ** 2) - 2 * r
 
 fig, ax = plt.subplots(figsize=(figw, figw), constrained_layout=True)
 # constrained layout seems to do a better job of eliminating unused margin space
@@ -149,7 +151,7 @@ ns = [len(row) for row in treb_rows]
 x0s = [0, 0.5, 1]  # just set for now (button-size-relative)
 
 # Treble buttons
-ys = d + r + np.arange(len(treb_rows)) * dx
+ys = d + r + np.arange(len(treb_rows)) * (2 * r + d2)
 for x0, y, row in zip(x0s, ys, reversed(treb_rows)):
     xs = np.arange(len(row)) * dx + r + d + x0 * dx
     for x, s in zip(xs, row):
