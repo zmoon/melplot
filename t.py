@@ -10,6 +10,10 @@ import numpy as np
 plt.close("all")
 
 PI = np.pi
+DEBUG = True
+
+
+tran = str.maketrans("#b=0123456789", "♯♭♮₀₁₂₃₄₅₆₇₈₉")
 
 
 def plot_button(
@@ -18,7 +22,7 @@ def plot_button(
     *,
     ax,
     radius: float = 0.02,
-    rotation: float = -15,
+    rotation: float = 0,
 ):
     """
     Parameters
@@ -28,7 +32,7 @@ def plot_button(
     """
     xc, yc = pos
     r = radius
-    note_push, note_pull = notes
+    note_push, note_pull = (note.translate(tran) for note in notes)
 
     # Button edge (circle)
     p = mpl.patches.Circle(pos, radius=radius, facecolor="none", edgecolor="blue")
@@ -46,22 +50,25 @@ def plot_button(
         zorder=0,
     )
     r2 = r / 2
-    text_kwargs = dict(va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod")
+    text_kwargs = dict(
+        va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod", size=12
+    )
     ax.text(xc + r2 * np.cos(PI + rot), yc + r2 * np.sin(PI + rot), note_push, **text_kwargs)
     ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, **text_kwargs)
 
 
-fig, ax = plt.subplots(figsize=(8, 7))
+fig, ax = plt.subplots(figsize=(8.5, 8.5))
 
-# ax.set_axis_off()
+if not DEBUG:
+    ax.set_axis_off()
 
 # TODO: look into PolyCollection instead individual patches for speed?
 
 # Standard 21-key D/G
 s4 = "D+/A+ D/A G+/D+ G/D"
 s3 = "B+/E- B/E C+/C+ C/C"
-s2 = "F/Eb D/F# G/A B/C D/E F#/G B/A D/C G/E B/F#"
-s1 = "G#/Bb A/C# D/E F#/G A/B D/C# F#/E A/G D/B F#/C# A/E"
+s2 = "F5/Eb5 D4/F#4 G4/A B/C D/E G5/F# B/A D/C G6/E B/F#"
+s1 = "G#4/Bb4 A3/C#4 D4/E F#/G A/B D5/C# F#/E A/G D6/B F#/C# A/E"
 
 # Row 1
 r = 0.04  # radius
