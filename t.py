@@ -10,7 +10,7 @@ import numpy as np
 plt.close("all")
 
 PI = np.pi
-DEBUG = True
+DEBUG = False
 
 
 tran = str.maketrans("#b=0123456789", "♯♭♮₀₁₂₃₄₅₆₇₈₉")
@@ -57,46 +57,107 @@ def plot_button(
     ax.text(xc + r2 * np.cos(rot), yc + r2 * np.sin(rot), note_pull, **text_kwargs)
 
 
-fig, ax = plt.subplots(figsize=(8.5, 8.5))
+# TODO: look into PolyCollection instead individual patches for speed?
+
+# Standard 21-key D/G
+dg21 = """\
+D+|A+ D|A G+|D+ G|D
+B+|E- B|E C+|C+ C|C
+---
+F5|Eb5 D4|F#4 G4|A B|C D|E G5|F# B|A D|C G6|E B|F#
+G#4|Bb4 A3|C#4 D4|E F#|G A|B D5|C# F#|E A|G D6|B F#|C# A|E
+"""
+
+dg21_treb_only = "\n".join(dg21.splitlines()[3:])
+
+
+def split_button(s: str, *, sep: str = "|"):
+    """Split button with validation."""
+    notes = s.split(sep)
+    n = len(notes)
+    if n > 2:
+        raise ValueError(f"invalid button {s!r}, splitting on {sep!r} found >2 notes")
+    elif n == 1:
+        print(f"note: doubling detected single note {notes[0]!r}")
+        notes.append(notes[0])
+
+    return tuple(notes)
+
+
+def read_layout(s: str, *, button_sep: str = "|"):
+    bass_rows = []
+    treb_rows = []
+    bass = True
+    for line in s.splitlines():
+        if all(c == "-" for c in line.strip()):  # bellows
+            bass = False
+            continue
+
+        notes = [split_button(button, sep=button_sep) for button in line.split()]
+        if bass:
+            bass_rows.append(notes)
+        else:
+            treb_rows.append(notes)
+
+    # Allow for treble-only diagrams
+    if bass:
+        treb_rows, bass_rows = bass_rows, []
+
+    return treb_rows, bass_rows
+
+
+treb_rows, bass_rows = read_layout(dg21)
+
+# Size settings
+figw = 8
+r = 0.04  # radius
+d = 0.01  # space between
+dx = 2 * r + d  # center to center distance
+n_bellows = 4
+dy_bellows = 0.03
+w_bellows = 0.5
+pad_bellows = 0.035
+
+fig, ax = plt.subplots(figsize=(figw, figw), constrained_layout=True)
+# constrained layout seems to do a better job of eliminating unused margin space
 
 if not DEBUG:
     ax.set_axis_off()
 
-# TODO: look into PolyCollection instead individual patches for speed?
+# Compute treble row starting positions??
+# TODO: Probably want to be able to specify this in input
+ns = [len(row) for row in treb_rows]
+x0s = [0, 0.5]  # just set for now (button-size-relative)
 
-# Standard 21-key D/G
-s4 = "D+/A+ D/A G+/D+ G/D"
-s3 = "B+/E- B/E C+/C+ C/C"
-s2 = "F5/Eb5 D4/F#4 G4/A B/C D/E G5/F# B/A D/C G6/E B/F#"
-s1 = "G#4/Bb4 A3/C#4 D4/E F#/G A/B D5/C# F#/E A/G D6/B F#/C# A/E"
+# Treble buttons
+ys = d + r + np.arange(len(treb_rows)) * dx
+for x0, y, row in zip(x0s, ys, reversed(treb_rows)):
+    xs = np.arange(len(row)) * dx + r + d + x0 * dx
+    for x, s in zip(xs, row):
+        plot_button((x, y), s, radius=r, ax=ax)
 
-# Row 1
-r = 0.04  # radius
-d = 0.01  # space between
-dx = 2 * r + d  # center to center
-xs = np.arange(11) * dx + r + d
-for x, s in zip(xs, s1.split()):
-    plot_button((x, 0.2), s.split("/"), radius=r, ax=ax)
+# Bellows
+ys2 = ys[-1] + r + pad_bellows + np.arange(n_bellows) * dy_bellows
+for y in ys2:
+    ax.plot([0.5 - w_bellows / 2, 0.5 + w_bellows / 2], [y, y], "0.1", lw=1)
 
-# Row 2
-xs = np.arange(10) * dx + r + d + dx / 2
-for x, s in zip(xs, s2.split()):
-    plot_button((x, 0.29), s.split("/"), radius=r, ax=ax)
+# Bass buttons
+ys3 = ys2[-1] + pad_bellows + r + np.arange(len(bass_rows)) * dx
+x0 = 0.5 - (len(bass_rows[-1]) * dx - d) / 2 + r
+# TODO: also support specifying
+for y, row in zip(ys3, reversed(bass_rows)):
+    xs = x0 + np.arange(len(row)) * dx
+    for x, s in zip(xs, row):
+        plot_button((x, y), s, radius=r, ax=ax)
 
-# "Bellows"
-ys = [0.37, 0.4, 0.43, 0.46]
-for y in ys:
-    ax.plot([0.3, 0.7], [y, y], "0.1", lw=1)
-
-xs = np.arange(4) * dx + r + d + 3.5 * dx
-for x, s in zip(xs, s3.split()):
-    plot_button((x, 0.53), s.split("/"), radius=r, ax=ax)
-
-for x, s in zip(xs, s4.split()):
-    plot_button((x, 0.62), s.split("/"), radius=r, ax=ax)
-
+ymax = ys3[-1] + r + d
 
 ax.axis("scaled")
-ax.set(xlim=(0, 1), ylim=(0, 1))
+ax.set(xlim=(0, 1), ylim=(0, ymax))
 
-fig.tight_layout()
+if not DEBUG:
+    figw_ = fig.get_figwidth()
+    assert figw_ == figw
+    fig.set_size_inches((figw_, ymax * figw_ * 1.01))
+
+# fig.tight_layout()
