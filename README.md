@@ -2,7 +2,7 @@
 
 Plot melodeon[^dba] layout diagrams
 
-<img src="https://user-images.githubusercontent.com/15079414/170173206-21f56181-58fd-41f0-922e-d630c9202582.png"
+<img src="https://user-images.githubusercontent.com/15079414/170375705-f7c56244-2f58-4237-8f70-1562df22206e.png"
      alt="Standard 2-row, 21-key D/G layout"
      width="667"
      >

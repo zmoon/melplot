@@ -14,8 +14,11 @@ plt.close("all")
 PI = np.pi
 DEBUG = False
 
+_TRAN_ABC_TO_UNICODE = str.maketrans("#b=0123456789-", "♯♭♮₀₁₂₃₄₅₆₇₈₉−")
 
-tran = str.maketrans("#b=0123456789-", "♯♭♮₀₁₂₃₄₅₆₇₈₉−")
+_DEFAULT_BUTTON_TEXT_KWARGS = dict(
+    va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod", size=12
+)
 
 
 def plot_button(
@@ -24,7 +27,8 @@ def plot_button(
     *,
     ax: mpl.axes.Axes,
     radius: float = 0.02,
-    rotation: float = 0,
+    rotation: float = -90,
+    text_kwargs: dict | None = None,
 ):
     """
     Parameters
@@ -34,7 +38,10 @@ def plot_button(
     """
     xc, yc = pos
     r = radius
-    note_push, note_pull = (note.translate(tran) for note in notes)
+    note_push, note_pull = (note.translate(_TRAN_ABC_TO_UNICODE) for note in notes)
+    if text_kwargs is None:
+        text_kwargs = {}
+    text_kwargs = {**_DEFAULT_BUTTON_TEXT_KWARGS, **text_kwargs}
 
     # Button edge (circle)
     p = mpl.patches.Circle(pos, radius=radius, facecolor="none", edgecolor="blue")
@@ -52,9 +59,6 @@ def plot_button(
         zorder=0,
     )
     r2 = r / 2
-    text_kwargs = dict(
-        va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod", size=12
-    )
     ax.text(
         xc + r2 * np.cos(PI + rot),
         yc + r2 * np.sin(PI + rot),
@@ -175,6 +179,13 @@ for y, row in zip(ys3, reversed(bass_rows)):
 
 ymax = ys3[-1] + r + d
 
+# Legend
+plot_button(
+    (0.5 * dx, ymax - 0.5 * dx), ("Push", "Pull"), radius=r, ax=ax, text_kwargs=dict(rotation=90)
+)
+ax.text(d, ymax - dx, "+ : major chord", va="top")
+ax.text(d, ymax - dx - 0.02, "− : minor chord", va="top")
+
 ax.axis("scaled")
 ax.set(xlim=(0, 1), ylim=(0, ymax))
 
@@ -183,4 +194,4 @@ if not DEBUG:
     assert figw_ == figw
     fig.set_size_inches((figw_, ymax * figw_ * 1.01))
 
-# fig.tight_layout()
+plt.show()
