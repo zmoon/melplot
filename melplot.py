@@ -22,7 +22,7 @@ def plot_button(
     pos: tuple[float, float],
     notes: tuple[str, str],
     *,
-    ax,
+    ax: mpl.axes.Axes,
     radius: float = 0.02,
     rotation: float = 0,
 ):
