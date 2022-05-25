@@ -73,7 +73,7 @@ D+|A+ D|A G+|D+ G|D
 B+|E- B|E C+|C+ C|C
 ---
 F5|Eb5 D4|F#4 G4|A B|C D|E G5|F# B|A D|C G6|E B|F#
-G#4|Bb4 A3|C#4 D4|E F#|G A|B D5|C# F#|E A|G D6|B F#|C# A|E
+G#4|Bb4 A3|C#4 D4*|E F#|G A|B D5*|C# F#|E A|G D6*|B F#|C# A|E
 """
 
 dg21_treb_only = "\n".join(dg21.splitlines()[3:])
@@ -123,7 +123,7 @@ def read_layout(s: str, *, button_sep: str = "|"):
     return treb_rows, bass_rows
 
 
-treb_rows, bass_rows = read_layout(elye_new)
+treb_rows, bass_rows = read_layout(dg21)
 nmax = max(len(row) for row in treb_rows)
 
 # Size settings
@@ -142,7 +142,7 @@ pad_bellows = 0.03
 d2 = np.sqrt((2 * r + d) ** 2 - (r + d / 2) ** 2) - 2 * r
 
 fig, ax = plt.subplots(figsize=(figw, figw), constrained_layout=True)
-# constrained layout seems to do a better job of eliminating unused margin space
+# Constrained layout seems to do a better job of eliminating unused margin space
 
 if not DEBUG:
     ax.set_axis_off()

@@ -22,3 +22,6 @@ Home = "https://github.com/zmoon/melplot"
 test = [
     "mypy",
 ]
+dev = [
+    "ipython",
+]
