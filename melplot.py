@@ -1,11 +1,13 @@
 """
-Trying basic mel diagram
+Melodeon layout diagrams
 """
 from __future__ import annotations
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+
+__version__ = "0.1.0.dev0"
 
 plt.close("all")
 

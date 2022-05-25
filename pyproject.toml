@@ -9,6 +9,16 @@ readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version", "description"]
+requires-python = "~=3.7"
+dependencies = [
+    "matplotlib",
+    "numpy",
+]
 
 [project.urls]
 Home = "https://github.com/zmoon/melplot"
+
+[project.optional-dependencies]
+test = [
+    "mypy",
+]
