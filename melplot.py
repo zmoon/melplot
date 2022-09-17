@@ -72,8 +72,8 @@ def plot_button(
 # TODO: look into PolyCollection instead individual patches for speed?
 
 
-# Standard 21-key D/G
-_EXAMPLES_TO_KEY: dict[str, tuple[str]] = {
+_EXAMPLES_TO_KEY: dict[str, tuple[str, ...]] = {
+    # Standard 21-key D/G
     """\
 D+|A+ D|A G+|D+ G|D
 B+|E- B|E C+|C+ C|C
@@ -85,6 +85,7 @@ G#4|Bb4 A3|C#4 D4*|E F#|G A|B D5*|C# F#|E A|G D6*|B F#|C# A|E
         "DG",
         "DG21",
     ),
+    # Elye's new layout
     """\
 Eb+|F#- Eb|F# D+|A+ D|A G+|D+ G|D
 Bb+|F+  Bb|F  B-|E- B|E C+|C+ C|C
