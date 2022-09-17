@@ -192,16 +192,19 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
     for y in ys2:
         ax.plot([0.5 - w_bellows / 2, 0.5 + w_bellows / 2], [y, y], "0.1", lw=1)
 
-    # Bass buttons
-    ys3 = ys2[-1] + pad_bellows + r + np.arange(len(bass_rows)) * dx
-    x0 = 0.5 - (len(bass_rows[-1]) * dx - d) / 2 + r
-    # TODO: also support specifying
-    for y, row in zip(ys3, reversed(bass_rows)):
-        xs = x0 + np.arange(len(row)) * dx
-        for x, s in zip(xs, row):
-            plot_button((x, y), s, radius=r, ax=ax)
+    if bass_rows:
+        # Bass buttons
+        ys3 = ys2[-1] + pad_bellows + r + np.arange(len(bass_rows)) * dx
+        x0 = 0.5 - (len(bass_rows[-1]) * dx - d) / 2 + r
+        # TODO: also support specifying
+        for y, row in zip(ys3, reversed(bass_rows)):
+            xs = x0 + np.arange(len(row)) * dx
+            for x, s in zip(xs, row):
+                plot_button((x, y), s, radius=r, ax=ax)
 
-    ymax = ys3[-1] + r + d
+        ymax = ys3[-1] + r + d
+    else:
+        ymax = ys2[-1] + r + d
 
     # Legend
     plot_button(
