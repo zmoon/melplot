@@ -226,10 +226,23 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
         fig.set_size_inches((figw_, ymax * figw_ * 1.01))
 
 
+def _version_callback(value: bool):
+    if value:
+        typer.echo(f"melplot {__version__}")
+        raise typer.Exit()
+
+
 @app.command()
 def cli(
     example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
     debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
+    version: bool = typer.Option(
+        False,
+        "--version/",
+        help="Print version and exit.",
+        callback=_version_callback,
+        is_eager=True,
+    ),
 ):
     """Plot Melodeon diagram."""
     global DEBUG
