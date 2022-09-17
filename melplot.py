@@ -6,6 +6,7 @@ from __future__ import annotations
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import typer
 
 __version__ = "0.1.0.dev0"
 
@@ -22,6 +23,8 @@ _DEFAULT_BUTTON_TEXT_KWARGS = dict(
 
 ButtonNotes_T = tuple[str, str]
 Row_T = list[ButtonNotes_T]
+
+app = typer.Typer(add_completion=False)
 
 
 def plot_button(
@@ -206,7 +209,7 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
         ("Push", "Pull"),
         radius=r,
         ax=ax,
-        text_kwargs=dict(rotation=90),
+        text_kwargs=dict(rotation=0),
     )
     ax.text(d, ymax - dx, "+ : major chord", va="top")
     ax.text(d, ymax - dx - 0.02, "− : minor chord", va="top")
@@ -220,12 +223,26 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
         fig.set_size_inches((figw_, ymax * figw_ * 1.01))
 
 
-if __name__ == "__main__":
-
-    layout_spec = EXAMPLES["DG21"]
+@app.command()
+def cli(
+    example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
+):
+    """Plot Melodeon diagram."""
+    try:
+        layout_spec = EXAMPLES[example]
+    except KeyError:
+        print(
+            "error: Invalid example. Valid example keys (some point to the same layout) "
+            f"are: {list(EXAMPLES)}"
+        )
+        raise typer.Exit(2)
 
     treb_rows, bass_rows = read_layout(layout_spec)
 
     plot(treb_rows, bass_rows)
 
     plt.show()
+
+
+if __name__ == "__main__":
+    app()

@@ -25,3 +25,10 @@ test = [
 dev = [
     "ipython",
 ]
+cli = [
+    "rich",
+    "typer",
+]
+
+[project.scripts]
+melplot = "melplot:app"
