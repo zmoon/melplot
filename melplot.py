@@ -151,7 +151,7 @@ def read_layout(s: str, *, button_sep: str = "|") -> tuple[list[Row_T], list[Row
     return treb_rows, bass_rows
 
 
-def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
+def plot(treb_rows: list[Row_T], bass_rows: list[Row_T], *, rotation: float = 0) -> None:
     nmax = max(len(row) for row in treb_rows)
 
     # Size settings
@@ -185,7 +185,7 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
     for x0, y, row in zip(x0s, ys, reversed(treb_rows)):
         xs = np.arange(len(row)) * dx + r + d + x0 * dx
         for x, s in zip(xs, row):
-            plot_button((x, y), s, radius=r, ax=ax)
+            plot_button((x, y), s, radius=r, ax=ax, rotation=rotation)
 
     # Bellows
     ys2 = ys[-1] + r + pad_bellows + np.arange(n_bellows) * dy_bellows
@@ -200,19 +200,26 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
         for y, row in zip(ys3, reversed(bass_rows)):
             xs = x0 + np.arange(len(row)) * dx
             for x, s in zip(xs, row):
-                plot_button((x, y), s, radius=r, ax=ax)
+                plot_button((x, y), s, radius=r, ax=ax, rotation=rotation)
 
         ymax = ys3[-1] + r + d
     else:
         ymax = ys2[-1] + r + d
 
     # Legend
+    mrot = rotation % 360
+    q = 35
+    if 0 <= mrot <= q or 360 - q <= mrot < 360 or 180 - q <= mrot <= 180 + q:
+        legrot = 90
+    else:
+        legrot = 0
     plot_button(
         (0.5 * dx, ymax - 0.5 * dx),
         ("Push", "Pull"),
         radius=r,
         ax=ax,
-        text_kwargs=dict(rotation=0),
+        rotation=rotation,
+        text_kwargs=dict(rotation=legrot),
     )
     ax.text(d, ymax - dx, "+ : major chord", va="top")
     ax.text(d, ymax - dx - 0.02, "− : minor chord", va="top")
@@ -235,6 +242,9 @@ def _version_callback(value: bool):
 @app.command()
 def cli(
     example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
+    rotation: float = typer.Option(
+        0, help="Button rotation (degrees). By default, push is directly above pull"
+    ),
     debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
     version: bool = typer.Option(
         False,
@@ -259,7 +269,8 @@ def cli(
 
     treb_rows, bass_rows = read_layout(layout_spec)
 
-    plot(treb_rows, bass_rows)
+    plot(treb_rows, bass_rows, rotation=rotation)
+    print("Close plot to exit.")
 
     plt.show()
 
