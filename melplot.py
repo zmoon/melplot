@@ -229,8 +229,12 @@ def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
 @app.command()
 def cli(
     example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
+    debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
 ):
     """Plot Melodeon diagram."""
+    global DEBUG
+    DEBUG = debug
+
     try:
         layout_spec = EXAMPLES[example]
     except KeyError:
