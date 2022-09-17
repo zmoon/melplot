@@ -103,6 +103,17 @@ D3|E F#|B A3|C#4 D4|E F#|G A|B D5|C# F#|E A|G D6|B F#|C# A|E
         "Elye",
         "Elye new",
     ),
+    # B/C layout with McComiskey bass
+    """\
+G+|D+ G|D C+|G+ C|G
+E+|A+ E|A D+|F+ D|F
+---
+E3|A3 G3|B3 C4|D4 E4|F4 G4|A4 C5|B5 E5|D5 G5|F5 C6|A5 E6|B5
+D#3|G#3 F#3|A#3 B3|C#4 D#4|E4 F#4|G#4 B4|A#4 D#5|C#5 F#5|E5 B5|G#5 D#6|A#5 F#6|C#6
+""": (
+        "B/C",
+        "BC",
+    ),
 }
 """Mapping of layout spec to accepted name keys."""
 
