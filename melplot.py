@@ -20,16 +20,19 @@ _DEFAULT_BUTTON_TEXT_KWARGS = dict(
     va="center", ha="center", fontfamily="sans-serif", color="darkgoldenrod", size=12
 )
 
+ButtonNotes_T = tuple[str, str]
+Row_T = list[ButtonNotes_T]
+
 
 def plot_button(
     pos: tuple[float, float],
-    notes: tuple[str, str],
+    notes: ButtonNotes_T,
     *,
     ax: mpl.axes.Axes,
     radius: float = 0.02,
     rotation: float = -90,
     text_kwargs: dict | None = None,
-):
+) -> None:
     """
     Parameters
     ----------
@@ -108,8 +111,10 @@ EXAMPLES: dict[str, str] = {
 EXAMPLES["DG21 treb"] = "\n".join(EXAMPLES["DG21"].splitlines()[3:])
 
 
-def split_button(s: str, *, sep: str = "|"):
-    """Split button with validation."""
+def split_button(s: str, *, sep: str = "|") -> ButtonNotes_T:
+    """Split button into two note strings with validation.
+    If button has only one note, it will be doubled.
+    """
     notes = s.split(sep)
     n = len(notes)
     if n > 2:
@@ -118,10 +123,10 @@ def split_button(s: str, *, sep: str = "|"):
         print(f"note: doubling detected single note {notes[0]!r}")
         notes.append(notes[0])
 
-    return tuple(notes)
+    return (notes[0], notes[1])
 
 
-def read_layout(s: str, *, button_sep: str = "|"):
+def read_layout(s: str, *, button_sep: str = "|") -> tuple[list[Row_T], list[Row_T]]:
     bass_rows = []
     treb_rows = []
     bass = True
@@ -143,7 +148,7 @@ def read_layout(s: str, *, button_sep: str = "|"):
     return treb_rows, bass_rows
 
 
-def plot(treb_rows, bass_rows):
+def plot(treb_rows: list[Row_T], bass_rows: list[Row_T]) -> None:
     nmax = max(len(row) for row in treb_rows)
 
     # Size settings
