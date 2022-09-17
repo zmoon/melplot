@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import typer
 
-__version__ = "0.1.0.dev0"
+__version__ = "0.1.0.dev1"
 
 plt.close("all")
 
