@@ -10,8 +10,6 @@ import typer
 
 __version__ = "0.1.0.dev1"
 
-plt.close("all")
-
 PI = np.pi
 DEBUG = False
 
