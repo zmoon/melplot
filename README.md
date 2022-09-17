@@ -38,8 +38,8 @@ _and ideas_
 - [ ] different ways to indicate octaves (e.g. color; piano key notation or wrt. root)
 - [ ] different options for pitch labels (ABC, piano key notation, scale degrees)
 - [ ] plotting notes on stave
-- [ ] CLI
-- [ ] first PyPI release
+- [x] CLI
+- [x] first PyPI release
 - [ ] HTML/CSS output option
 - [ ] fancier button style option (some 3-D-ness)
 - [ ] draw connections in bellows direction for consecutive notes or chord
