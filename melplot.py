@@ -160,11 +160,17 @@ def read_layout(s: str, *, button_sep: str = "|") -> tuple[list[Row_T], list[Row
     return treb_rows, bass_rows
 
 
-def plot(treb_rows: list[Row_T], bass_rows: list[Row_T], *, rotation: float = 0) -> None:
+def plot(
+    treb_rows: list[Row_T],
+    bass_rows: list[Row_T],
+    *,
+    rotation: float = -90,
+    figsize: float = 9,
+) -> None:
     nmax = max(len(row) for row in treb_rows)
 
     # Size settings
-    figw = 9
+    figw = figsize
     drel = 0.32  # button padding relative to radius
     r = 1 / (2 * nmax + (nmax + 1) * drel)  # radius, maximizing horiz space
     d = drel * r  # space between
@@ -254,6 +260,10 @@ def cli(
     rotation: float = typer.Option(
         -90, help="Button rotation (degrees). By default, push is directly above pull"
     ),
+    figsize: float = typer.Option(
+        9,
+        help="Size of figure maximum dimension, usually the width.",
+    ),
     debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
     version: bool = typer.Option(
         False,
@@ -278,7 +288,7 @@ def cli(
 
     treb_rows, bass_rows = read_layout(layout_spec)
 
-    plot(treb_rows, bass_rows, rotation=rotation)
+    plot(treb_rows, bass_rows, rotation=rotation, figsize=figsize)
     print("Close plot to exit.")
 
     plt.show()
