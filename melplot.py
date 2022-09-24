@@ -252,7 +252,7 @@ def _version_callback(value: bool):
 def cli(
     example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
     rotation: float = typer.Option(
-        0, help="Button rotation (degrees). By default, push is directly above pull"
+        -90, help="Button rotation (degrees). By default, push is directly above pull"
     ),
     debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
     version: bool = typer.Option(
