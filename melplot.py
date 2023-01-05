@@ -3,6 +3,8 @@ Melodeon layout diagrams
 """
 from __future__ import annotations
 
+from typing import Optional
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,7 +22,7 @@ _DEFAULT_BUTTON_TEXT_KWARGS = dict(
 )
 
 ButtonNotes_T = tuple[str, str]
-Row_T = list[ButtonNotes_T]
+Row_T = list[Optional[ButtonNotes_T]]
 
 app = typer.Typer(add_completion=False)
 
@@ -112,6 +114,20 @@ D#3|G#3 F#3|A#3 B3|C#4 D#4|E4 F#4|G#4 B4|A#4 D#5|C#5 F#5|E5 B5|G#5 D#6|A#5 F#6|C
         "B/C",
         "BC",
     ),
+    # Paul Young 21 + 5 D/G
+    """\
+Eb+|F#- Eb|F# D+|A+ D|A G+|D+ G|D
+Bb+|F+ Bb|F B-|E- B|E C+|C+ C|C
+---
+x x F4|F4 Bb4|G#4 Eb5|D5 F5|F5 Bb5|G#5
+Eb4|D4 B3|C4 D4|F#4 G4|A4 B4|C5 D5|E5 G5|F#5 B5|A5 D6|C6 G6|E6
+Bb3|B3 G3|A3 A3|C#4 D4|E4 F#4|G4 A4|B4 D5|C#5 F#5|E5 A5|G5 D6|B6 F#6|C#6
+""": (
+        "Paul Young DG",
+        "Paul Young D/G",
+        "Paul Young DG21.5",
+    ),
+    #
 }
 """Mapping of layout spec to accepted name keys."""
 
@@ -123,10 +139,13 @@ EXAMPLES: dict[str, str] = {
 EXAMPLES["DG21 treb"] = "\n".join(EXAMPLES["DG21"].splitlines()[3:])
 
 
-def split_button(s: str, *, sep: str = "|") -> ButtonNotes_T:
+def split_button(s: str, *, sep: str = "|") -> ButtonNotes_T | None:
     """Split button into two note strings with validation.
     If button has only one note, it will be doubled.
     """
+    if s == "x":  # placeholder
+        return None
+
     notes = s.split(sep)
     n = len(notes)
     if n > 2:
@@ -200,6 +219,8 @@ def plot(
     for x0, y, row in zip(x0s, ys, reversed(treb_rows)):
         xs = np.arange(len(row)) * dx + r + d + x0 * dx
         for x, s in zip(xs, row):
+            if s is None:
+                continue
             plot_button((x, y), s, radius=r, ax=ax, rotation=rotation)
 
     # Bellows
@@ -215,6 +236,8 @@ def plot(
         for y, row in zip(ys3, reversed(bass_rows)):
             xs = x0 + np.arange(len(row)) * dx
             for x, s in zip(xs, row):
+                if s is None:
+                    continue
                 plot_button((x, y), s, radius=r, ax=ax, rotation=rotation)
 
         ymax = ys3[-1] + r + d
