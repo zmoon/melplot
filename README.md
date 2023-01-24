@@ -1,9 +1,9 @@
 # melplot
 
+_Plot melodeon[^dba] layout diagrams_
+
 [![Version on PyPI](https://img.shields.io/pypi/v/melplot.svg)](https://pypi.org/project/melplot/)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-
-Plot melodeon[^dba] layout diagrams
 
 <img src="https://user-images.githubusercontent.com/15079414/170375705-f7c56244-2f58-4237-8f70-1562df22206e.png"
      alt="Standard 2-row, 21-key D/G layout"
