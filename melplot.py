@@ -8,7 +8,13 @@ from typing import Optional
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import typer
+
+try:
+    import typer
+except ImportError:
+    have_typer = False
+else:
+    have_typer = True
 
 __version__ = "0.1.0.dev1"
 
@@ -23,8 +29,6 @@ _DEFAULT_BUTTON_TEXT_KWARGS = dict(
 
 ButtonNotes_T = tuple[str, str]
 Row_T = list[Optional[ButtonNotes_T]]
-
-app = typer.Typer(add_completion=False)
 
 
 def plot_button(
@@ -271,50 +275,58 @@ def plot(
         fig.set_size_inches((figw_, ymax * figw_ * 1.01))
 
 
-def _version_callback(value: bool):
-    if value:
-        typer.echo(f"melplot {__version__}")
-        raise typer.Exit()
+if have_typer:
+    app = typer.Typer(add_completion=False)
 
+    def _version_callback(value: bool):
+        if value:
+            typer.echo(f"melplot {__version__}")
+            raise typer.Exit()
 
-@app.command()
-def cli(
-    example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
-    rotation: float = typer.Option(
-        -90, help="Button rotation (degrees). By default, push is directly above pull"
-    ),
-    figsize: float = typer.Option(
-        9,
-        help="Size of figure maximum dimension, usually the width.",
-    ),
-    debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
-    version: bool = typer.Option(
-        False,
-        "--version/",
-        help="Print version and exit.",
-        callback=_version_callback,
-        is_eager=True,
-    ),
-):
-    """Plot Melodeon diagram."""
-    global DEBUG
-    DEBUG = debug
+    @app.command()
+    def cli(
+        example: str = typer.Option("DG21", "-e", "--example", help="Example to plot."),
+        rotation: float = typer.Option(
+            -90, help="Button rotation (degrees). By default, push is directly above pull"
+        ),
+        figsize: float = typer.Option(
+            9,
+            help="Size of figure maximum dimension, usually the width.",
+        ),
+        debug: bool = typer.Option(DEBUG, help="Show ax spines and debug messages."),
+        version: bool = typer.Option(
+            False,
+            "--version/",
+            help="Print version and exit.",
+            callback=_version_callback,
+            is_eager=True,
+        ),
+    ):
+        """Plot Melodeon diagram."""
+        global DEBUG
+        DEBUG = debug
 
-    try:
-        layout_spec = EXAMPLES[example]
-    except KeyError:
-        print(
-            "error: Invalid example. Valid example keys (some point to the same layout) "
-            f"are: {list(EXAMPLES)}"
-        )
-        raise typer.Exit(2)
+        try:
+            layout_spec = EXAMPLES[example]
+        except KeyError:
+            print(
+                "error: Invalid example. Valid example keys (some point to the same layout) "
+                f"are: {list(EXAMPLES)}"
+            )
+            raise typer.Exit(2)
 
-    treb_rows, bass_rows = read_layout(layout_spec)
+        treb_rows, bass_rows = read_layout(layout_spec)
 
-    plot(treb_rows, bass_rows, rotation=rotation, figsize=figsize)
-    print("Close plot to exit.")
+        plot(treb_rows, bass_rows, rotation=rotation, figsize=figsize)
+        print("Close plot to exit.")
 
-    plt.show()
+        plt.show()
+
+else:
+
+    def app():
+        print("Install `typer` to use the melplot CLI")
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
