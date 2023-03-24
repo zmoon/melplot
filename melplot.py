@@ -16,7 +16,7 @@ except ImportError:
 else:
     have_typer = True
 
-__version__ = "0.1.0.dev1"
+__version__ = "0.1.0.dev2"
 
 PI = np.pi
 DEBUG = False
