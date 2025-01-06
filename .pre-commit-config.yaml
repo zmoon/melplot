@@ -11,7 +11,7 @@ repos:
       - id: check-yaml
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: "v3.19.0"
+    rev: "v3.19.1"
     hooks:
       - id: pyupgrade
         args: [--py37-plus]
@@ -35,6 +35,6 @@ repos:
         args: [--max-line-length=100, "--ignore=E203,E402,E501,W503,E226"]
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: "v3.4.1"
+    rev: "v3.4.2"
     hooks:
       - id: prettier
