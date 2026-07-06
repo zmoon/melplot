@@ -17,7 +17,7 @@ repos:
         args: [--py37-plus]
 
   - repo: https://github.com/PyCQA/isort
-    rev: "8.0.1"
+    rev: "9.0.0a3"
     hooks:
       - id: isort
         args: [--project=melplot, --line-length=100, --profile=black]
@@ -35,6 +35,6 @@ repos:
         args: [--max-line-length=100, "--ignore=E203,E402,E501,W503,E226"]
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: "v3.8.3"
+    rev: "v3.9.4"
     hooks:
       - id: prettier
